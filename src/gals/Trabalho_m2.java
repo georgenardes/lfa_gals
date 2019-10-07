@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package trabalho_m2;
+package gals;
 
 import gals.LexicalError;
 import gals.Lexico;
@@ -25,29 +25,28 @@ public class Trabalho_m2 {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {               
+    public static void main(String[] args) throws IOException {               
         System.out.println("Digite a expressão: ");              
         
-        Lexico lexico = new Lexico();
         Sintatico sintatico = new Sintatico();
         Semantico semantico = new Semantico();
 
         LineNumberReader in = new LineNumberReader(new InputStreamReader(System.in));
         String line = in.readLine();
         
-        lexico.setInput( line );
+        Lexico lexico = new Lexico(line);        
 
         try
         {
           sintatico.parse(lexico, semantico);
           System.out.println(" = ");
-          System.out.println(trans.getResult());
+          System.out.println(semantico.getResult());
         }
         catch ( LexicalError e )
         {
           e.printStackTrace();
         }
-        catch ( SintaticError e )
+        catch ( SyntaticError e )
         {
           e.printStackTrace();
         }
