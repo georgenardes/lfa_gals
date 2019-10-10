@@ -1,0 +1,44 @@
+#Options
+GenerateScanner = true
+GenerateParser = true
+Language = Java
+ScannerName = Lexico
+ParserName = Sintatico
+SemanticName = Semantico
+Package = gals
+ScannerCaseSensitive = true
+ScannerTable = Compact
+Input = Stream
+Parser = SLR
+#RegularDefinitions
+
+#Tokens
+ :[\ \n\t\r\s]+
+show: "Show"
+numero: [0-1]+
+variavel: [a-zA-Z]+
+mais: "+"
+menos: "-"
+mult: "*"
+div: "/"
+abre: "("
+fecha: ")"
+igual: "="
+fim: ";"
+exp: "^"
+
+
+#NonTerminals
+<lista_comandos>
+<comando>
+<p1>
+<p2>
+<p3>
+<p4>
+#Grammar
+<lista_comandos> ::= <lista_comandos> <comando> | <comando>;
+<comando> ::= variavel #10 igual <p4> fim #11 | show abre <p4> fecha fim #9 | <p4>;
+<p4> ::= <p4> mais <p3> #5 | <p4> menos <p3> #6 | <p3>;
+<p3> ::= <p3> mult <p2> #7| <p3> div <p2> #8 | <p2> ;
+<p2> ::= <p1> exp <p1> #13| <p1>;
+<p1> ::= abre <p4> fecha | numero #3 | variavel #4;
