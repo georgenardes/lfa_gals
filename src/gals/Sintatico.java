@@ -1,5 +1,15 @@
 package gals;
 
+import static gals.Constants.DOLLAR;
+import static gals.ParserConstants.ACCEPT;
+import static gals.ParserConstants.ACTION;
+import static gals.ParserConstants.ERROR;
+import static gals.ParserConstants.FIRST_SEMANTIC_ACTION;
+import static gals.ParserConstants.PARSER_ERROR;
+import static gals.ParserConstants.PARSER_TABLE;
+import static gals.ParserConstants.PRODUCTIONS;
+import static gals.ParserConstants.REDUCE;
+import static gals.ParserConstants.SHIFT;
 import java.util.Stack;
 
 public class Sintatico implements Constants
@@ -14,10 +24,14 @@ public class Sintatico implements Constants
     {
         this.scanner = scanner;
         this.semanticAnalyser = semanticAnalyser;
-
+        
+        //Limpa pilha
         stack.clear();
+        
+        //Adiciona 0 a pillha
         stack.push(new Integer(0));
 
+        //Pega o primeiro caracter do scanner
         currentToken = scanner.nextToken();
 
         while ( ! step() )
@@ -26,6 +40,7 @@ public class Sintatico implements Constants
 
     private boolean step() throws LexicalError, SyntaticError, SemanticError
     {
+        //Se o token for null,  token = "$" na ultima posição
         if (currentToken == null)
         {
             int pos = 0;
@@ -37,7 +52,8 @@ public class Sintatico implements Constants
 
         int token = currentToken.getId();
         int state = ((Integer)stack.peek()).intValue();
-
+        
+        //Vetor de ações
         int[] cmd = PARSER_TABLE[state][token-1];
 
         switch (cmd[0])

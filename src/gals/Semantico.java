@@ -1,54 +1,75 @@
 package gals;
-import java.util.Stack;
 
+import trabalhom2_lfa.TrabalhoM2_LFA;
 
-public class Semantico implements Constants
-{
-  Stack stack = new Stack();
+public class Semantico implements Constants {
 
-  public int getResult()
-  {
-    return ((Integer)stack.peek()).intValue();
-  }
+    public void executeAction(int action, Token token) throws SemanticError {
+        //System.out.println("acao " + action + " -> token " + token.getLexeme());
 
-  public void executeAction(int action, Token token) throws SemanticError
-  {
-    Integer a, b;
+        Integer a, b;
+        switch (action) {
+            case 1:     /** EMPILHA UM NUMERO DO TOKEN**/
+                trabalhom2_lfa.TrabalhoM2_LFA.stack.push(Integer.parseInt(token.getLexeme(), 2));
+                break;
+                
+                
+            case 2: //SOMA
+                a = trabalhom2_lfa.TrabalhoM2_LFA.stack.pop();
+                b = trabalhom2_lfa.TrabalhoM2_LFA.stack.pop();
+                trabalhom2_lfa.TrabalhoM2_LFA.stack.push(a + b);
+                break;
+                
+                
+            case 3: //MULTIPLICAÇÃO
+                a = trabalhom2_lfa.TrabalhoM2_LFA.stack.pop();
+                b = trabalhom2_lfa.TrabalhoM2_LFA.stack.pop();
+                trabalhom2_lfa.TrabalhoM2_LFA.stack.push(a * b);
+                break;
+                
+                
+            case 4: //EMPILHA UMA VARIAVEL
+                TrabalhoM2_LFA.stack.push(TrabalhoM2_LFA.vars.get(token.getLexeme()));
+                break;
+                        
+                        
+            case 5: //SUBTRAÇÃO
+                a = trabalhom2_lfa.TrabalhoM2_LFA.stack.pop();
+                b = trabalhom2_lfa.TrabalhoM2_LFA.stack.pop();
+                trabalhom2_lfa.TrabalhoM2_LFA.stack.push(b - a);
+                break;
+                
+                
+            case 6: //DIVISÃO
+                a = trabalhom2_lfa.TrabalhoM2_LFA.stack.pop();
+                b = trabalhom2_lfa.TrabalhoM2_LFA.stack.pop();
+                trabalhom2_lfa.TrabalhoM2_LFA.stack.push(b / a);
+                break;
+                
+                
+            case 7: //FUNÇÃO SHOW
+                System.out.print("Resultado: "+Integer.toBinaryString(TrabalhoM2_LFA.vars.get(TrabalhoM2_LFA.ultimaVariavel))+"\n");
+                break;
+                
+                
+            case 8: //FUNÇÃO DE EXPONENCIAÇÃO
+                a = trabalhom2_lfa.TrabalhoM2_LFA.stack.pop();
+                b = trabalhom2_lfa.TrabalhoM2_LFA.stack.pop();
 
-    switch (action)
-    {
-      case 2:
-        String tmp = token.getLexeme();
-        if (tmp.charAt(0) == '0')
-          throw new SemanticError("Números começados por 0 não são permitidos", token.getPosition());
-        stack.push(Integer.valueOf(tmp));
-        break;      
-      case 3:
-        b = (Integer) stack.pop();
-        a = (Integer) stack.pop();
-        stack.push(new Integer(a.intValue() + b.intValue()));
-        break;
-      case 4:
-        b = (Integer) stack.pop();
-        a = (Integer) stack.pop();
-        stack.push(new Integer(a.intValue() - b.intValue()));
-        break;
-      case 5:
-        b = (Integer) stack.pop();
-        a = (Integer) stack.pop();
-        stack.push(new Integer(a.intValue() * b.intValue()));
-        break;
-      case 6:
-        b = (Integer) stack.pop();
-        a = (Integer) stack.pop();
-        stack.push(new Integer(a.intValue() / b.intValue()));
-        break;
-      case 7:
-        b = (Integer) stack.pop();
-        a = (Integer) stack.pop();
-        stack.push(new Integer((int) Math.pow(a.intValue(), b.intValue())));
-        break;  
-       
+                Double A = Math.pow(b, a);
+                trabalhom2_lfa.TrabalhoM2_LFA.stack.push(A.intValue());
+                break;
+                
+                
+                
+            case 9: //ATRIBUI NO MAP O NOME DA VARIAVEL E SEU VALOR.
+                TrabalhoM2_LFA.vars.put(TrabalhoM2_LFA.ultimaVariavel, TrabalhoM2_LFA.stack.pop());
+                break;
+                
+                
+            case 10:    //USADO PARA SABER QUAL VARIAVEL ESTA SENDO USADA
+                TrabalhoM2_LFA.ultimaVariavel = token.getLexeme();
+                break;
+        }
     }
-  }
 }
