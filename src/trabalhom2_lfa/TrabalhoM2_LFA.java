@@ -24,10 +24,6 @@ import java.util.Stack;
  */
 public class TrabalhoM2_LFA { 
     
-    public static Stack<Integer> stack = new Stack<Integer>();
-    public static Map<String, Integer> vars = new HashMap<String, Integer>();
-    public static String ultimaVariavel;
-    
     public static void main(String[] args) throws IOException {
         
         while(true){

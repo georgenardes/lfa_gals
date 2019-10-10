@@ -4,8 +4,7 @@ import trabalhom2_lfa.TrabalhoM2_LFA;
 
 public class Semantico implements Constants {
 
-    public void executeAction(int action, Token token) throws SemanticError {
-        //System.out.println("acao " + action + " -> token " + token.getLexeme());
+    public void executeAction(int action, Token token) throws SemanticError {        
 
         Integer a, b;
         switch (action) {
